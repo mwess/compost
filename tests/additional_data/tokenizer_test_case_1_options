@@ -1,0 +1,2 @@
+input=additional_data/tokenizer_test_case1_input
+tokenizer=NLTKTokenizer

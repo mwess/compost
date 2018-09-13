@@ -1,0 +1,5 @@
+# Options file for test case 1
+mode=tag
+taggers=perceptron,hmm,crf,treetagger
+tokenizer=NLTKTokenizer
+input=somedirectory

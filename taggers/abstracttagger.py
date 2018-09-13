@@ -6,6 +6,7 @@ import importlib
 tagger_directory = "taggers"
 default_taggerclass = "Tagger"
 
+
 def load_taggers(tagger_list):
     taggers = {}
     for filename in os.listdir(tagger_directory):
@@ -19,10 +20,11 @@ def load_taggers(tagger_list):
         taggers[module_name] = tagger()
     return taggers
 
+
 def load_tagger(tagger_name):
     module_name = tagger_name + ".py"
     if module_name not in os.listdir(tagger_directory):
-        raise TaggerNotFoundException("%s not found."%tagger_name)
+        raise TaggerNotFoundException("%s not found." % tagger_name)
     module = importlib.import_module(os.path.join(tagger_directory, module_name))
     tagger = getattr(module, default_taggerclass)
     if not inspect.isclass(tagger):
@@ -32,6 +34,7 @@ def load_tagger(tagger_name):
 
 class TaggerNotFoundException(Exception):
     pass
+
 
 class AbstractTagger(ABC):
 
@@ -55,8 +58,8 @@ class AbstractTagger(ABC):
     def train(self, data):
         pass
 
-    @abstractmethod
     @property
+    @abstractmethod
     def produces_temp_data(self):
         pass
 
@@ -64,11 +67,16 @@ class AbstractTagger(ABC):
     def add_temp_dir(self, options):
         pass
 
-    @abstractmethod
     @property
+    @abstractmethod
     def requires_additional_params(self):
         pass
 
     @abstractmethod
     def set_additional_params(self, options):
+        pass
+
+    @property
+    @abstractmethod
+    def model_name(self):
         pass

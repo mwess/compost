@@ -1,8 +1,9 @@
 """
 Put everything together here.
 """
-from tokenizers.abstracttokenizer import load_tokenizer, load_data
+from tokenizers.abstracttokenizer import load_tokenizer
 from taggers.abstracttagger import load_taggers
+from src.io import load_data
 from src.job import Job
 
 DEFAULT_SAVE_PATH = '.'
@@ -11,18 +12,19 @@ TRAIN_MODE = 'train'
 TAG_MODE = 'tag'
 TRAIN_KFCV = 'kfcv'
 
-class Pipeline():
+
+class Pipeline:
 
     DEFAULT_PARSER = "NLTKTokenizer"
 
     def __init__(self):
         self._tokenizer = None
         self._jobs = []
-
+        self._data = None
 
     def execute_options(self, options):
-        self._load_tokenizer()
-        self._load_taggers()
+        self._load_tokenizer(options)
+        self._load_taggers(options)
         data_read_mode = options.opts.get('input_mode', None)
         self._data = load_data(self._tokenizer, options.opts['input_data'], data_read_mode, options.opts['mode'])
         if options.opts["mode"] == TRAIN_MODE:

@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 import importlib
-import inspect
 import os
 
 
@@ -10,16 +9,19 @@ tokenizer_directory = "tokenizers"
 def load_tokenizer(tokenizer_name):
     module_name = tokenizer_name + ".py"
     if module_name not in os.listdir(tokenizer_directory):
-        raise Exception("Tokenizer cannot be found.")
-    tokenizer_module = importlib.import_module(os.path.join(tokenizer_directory, module_name))
-    tokenizer = getattr(tokenizer_module, default_classname)
-    if not inspect.isclass(tokenizer):
-        raise Exception("Tokenizer class is missing!")
-    return tokenizer()
+        raise TokenizerNotFoundException("Tokenizer cannot be found.")
+    tokenizer_module = importlib.import_module(tokenizer_directory + "." + tokenizer_name)
+    try:
+        tokenizer = getattr(tokenizer_module, default_classname)
+    except AttributeError:
+        raise TokenizerClassMissingException("Tokenizer class is missing!")
+    return tokenizer
 
 
-def load_data(fpath, mode):
-    # If fpath points to a directory we assume that each file in the directory should be loaded.
+class TokenizerNotFoundException(Exception):
+    pass
+
+class TokenizerClassMissingException(Exception):
     pass
 
 

@@ -1,6 +1,5 @@
-from abc import ABC, abstractmethod, abstractproperty
+from abc import ABC, abstractmethod
 import os
-from src.utils import not_implemented
 
 class AbstractOptions(ABC):
 
@@ -12,11 +11,10 @@ class AbstractOptions(ABC):
     def parse_options(self):
         pass
 
-    @abstractmethod
     @property
+    @abstractmethod
     def opts(self):
         pass
-
 
 
 class OptionsFile(AbstractOptions):
@@ -34,16 +32,16 @@ class OptionsFile(AbstractOptions):
     def parse_options(self):
         with open(self._filepath) as f:
             for line in f:
+                line = line.strip()
                 if len(line) == 0 or line.startswith(OptionsFile.COMMENT_CHAR):
                     continue
-                opt = line.split(maxsplit=1)
+                opt = line.split(OptionsFile.SPLIT_CHAR, maxsplit=1)
                 if len(opt) != 2:
                     pass
                 self._opts[opt[0]] = opt[1]
 
     def process_options(self):
-        if "taggers" in self._opts:
-            self._opts["taggers"] = self._opts["taggers"].split(",")
+        pass
 
 
     @property
@@ -51,7 +49,6 @@ class OptionsFile(AbstractOptions):
         return self._opts
 
 
-@not_implemented
 class XMLOptions(AbstractOptions):
 
     def __init__(self):
