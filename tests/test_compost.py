@@ -19,6 +19,8 @@ class CompostTest(unittest.TestCase):
     def test_compost_tagging_1(self):
         input_file = 'defaultoptions'
         options = OptionsFile(input_file)
+        if os.path.exists(options.opts['outputpath']):
+            os.remove(options.opts['outputpath'])
         pl = Pipeline()
         pl.execute_options(options)
         with open('tests/additional_data/compost_test/correct_result') as f:

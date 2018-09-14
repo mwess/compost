@@ -50,9 +50,5 @@ class Tagger(AbstractTagger):
         return self._model_name
 
     @property
-    def result(self):
-        return self._result
-
-    @property
     def name(self):
         return self._name

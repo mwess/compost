@@ -1,11 +1,20 @@
 """
-Handle file reading and file storing here.
+Handles file reading and file storing.
 """
 import os
-from src.utils import not_implemented
 
 
 def load_data(tokenizer_func, path, program_mode, file_type):
+    """
+    Function to load input data.
+    :param tokenizer_func: Function to tokenize read strings.
+    :param path: Path to input file or input directory.
+    :param program_mode: Mode like 'train', 'tag', etc. Different modes sometines require different reader functions
+    for the same file type.
+    :param file_type: Additional argument if the file suffix is not a clear indicator for the reader function, i.e.
+    we know different formats in xml files.
+    :return: return a list of tokens for further processing.
+    """
     docs = []
     if not os.path.exists(path):
         raise FileNotFoundError("%s could not be found." %path)
@@ -20,6 +29,14 @@ def load_data(tokenizer_func, path, program_mode, file_type):
 
 
 def get_filereader_function(fname, program_mode, mode=None):
+    """
+    :param fname: Path to input file or input directory.
+    :param program_mode: Mode like 'train', 'tag', etc. Different modes sometines require different reader functions
+    for the same file type.
+    :param file_type: Additional argument if the file suffix is not a clear indicator for the reader function, i.e.
+    we know different formats in xml files.
+    :return: reader function
+    """
     if mode is None:
         if '.' not in fname:
             reader_id = ''
@@ -33,22 +50,43 @@ def get_filereader_function(fname, program_mode, mode=None):
 
 
 def read_file(tokenizer_func, fpath, program_mode, mode=None):
-        read_func = get_filereader_function(fpath, program_mode, mode)
-        if program_mode == "train":
-            return read_func(fpath)
-        else:
-            return tokenizer_func().tokenize(read_func(fpath))
+    """
+    Use reader_function to read file. Text is not tokenized when the program_mode is not a training mode.
+    :param tokenizer_func: Function to tokenize read strings.
+    :param path: Path to input file or input directory.
+    :param program_mode: Mode like 'train', 'tag', etc. Different modes sometines require different reader functions
+    for the same file type.
+    :param file_type: Additional argument if the file suffix is not a clear indicator for the reader function, i.e.
+    we know different formats in xml files.
+    :return: return a list of tokens for further processing.
+    """
+    read_func = get_filereader_function(fpath, program_mode, mode)
+    if program_mode == "train":
+        return read_func(fpath)
+    else:
+        return tokenizer_func().tokenize(read_func(fpath))
 
 
 def read_txt_file(fpath):
+    """
+    Read file in txt format (no special structured format).
+    :param fpath:
+    :return:
+    """
     with open(fpath) as f:
         text = f.read()
     return text
 
 
 def read_training_txt_file(fpath):
+    """
+    Read training data in txt file format. Structure is: One token per line, seperated by '\t'. First element is
+    token, second is tag.
+    :param fpath:
+    :return:
+    """
     with open(fpath) as f:
-        content = [x.split() for x in f.readlines()]
+        content = [x.split('\t') for x in f.readlines()]
     return content
 
 

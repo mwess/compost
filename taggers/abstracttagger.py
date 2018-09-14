@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-import os
-import inspect
 import importlib
+import inspect
+import os
 
 tagger_directory = "taggers"
 default_taggerclass = "Tagger"
@@ -13,10 +13,6 @@ def load_taggers(tagger_list):
         available_modules = [x.split('.')[0] for x in os.listdir(tagger_directory)]
         if module_name not in available_modules:
             continue
-    #for filename in os.listdir(tagger_directory):
-        #module_name = filename.split('.')[0]
-        #if module_name not in tagger_list:
-        #    continue
         module = importlib.import_module('.'.join([tagger_directory, module_name]))
         tagger = getattr(module, default_taggerclass)
         if not inspect.isclass(tagger):
@@ -87,5 +83,5 @@ class AbstractTagger(ABC):
 
     @property
     @abstractmethod
-    def result(self):
+    def name(self):
         pass
