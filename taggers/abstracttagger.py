@@ -3,11 +3,18 @@ import importlib
 import inspect
 import os
 
+from src.utils import deprecated
+
 tagger_directory = "taggers"
 default_taggerclass = "Tagger"
 
 
 def load_taggers(tagger_list):
+    """
+    Load taggers from list. Currently only modules in tagger_directory are saved.
+    :param tagger_list:
+    :return: list of taggers.
+    """
     taggers = []
     for module_name in tagger_list:
         available_modules = [x.split('.')[0] for x in os.listdir(tagger_directory)]
@@ -21,6 +28,7 @@ def load_taggers(tagger_list):
     return taggers
 
 
+@deprecated
 def load_tagger(tagger_name):
     module_name = tagger_name + ".py"
     if module_name not in os.listdir(tagger_directory):
@@ -37,6 +45,9 @@ class TaggerNotFoundException(Exception):
 
 
 class AbstractTagger(ABC):
+    """
+    AbstractTagger class. All taggers in compost must inherit from this class in order to be callable.
+    """
 
     @abstractmethod
     def __init__(self, **kwargs):
@@ -44,44 +55,91 @@ class AbstractTagger(ABC):
 
     @abstractmethod
     def save(self, fpath):
+        """
+        Save trained model in the given directory. Name of the saved model has to be supplied by the inheriting tagger
+        class.
+        :param fpath: directory to save path.
+        :return:
+        """
         pass
 
     @abstractmethod
     def load(self, fpath):
+        """
+        Load model from path. Model name has to be supplied by the inheriting tagger class.
+        :param fpath: directory of model to be loaded.
+        :return: Model
+        """
         pass
 
     @abstractmethod
     def tag(self, data):
+        """
+        Part-Of-Speech tag a given sequence of data.
+        :param data: list of tokens
+        :return: list of tags
+        """
         pass
 
     @abstractmethod
     def train(self, data):
+        """
+        Traing a Part-Of-Speech tagger model from data.
+        :param data: list of tuples. Tuples have the form (token, tag)
+        :return:
+        """
         pass
 
     @property
     @abstractmethod
     def produces_temp_data(self):
+        """
+        Indicates if the inheriting tagger class requires additional storage for temporary data.
+        :return: bool
+        """
         pass
 
     @abstractmethod
-    def add_temp_dir(self, options):
+    def add_temp_dir(self, temp_path):
+        """
+        Path to the temporary directory. Only called when produces_temp_data returns True.
+        :param temp_path:
+        :return:
+        """
         pass
 
     @property
     @abstractmethod
     def requires_additional_params(self):
+        """
+        Return True if additional parameters are required for inheriting tagger class to be configured properly.
+        :return: bool
+        """
         pass
 
     @abstractmethod
     def set_additional_params(self, options):
+        """
+        Additional parameters for the tagger configuration can be passed here.
+        :param options:
+        :return:
+        """
         pass
 
     @property
     @abstractmethod
     def model_name(self):
+        """
+        Name of model to be saved.
+        :return: string
+        """
         pass
 
     @property
     @abstractmethod
     def name(self):
+        """
+        Name of the tagger.
+        :return: string
+        """
         pass
