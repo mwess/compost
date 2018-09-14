@@ -3,21 +3,20 @@ Handle file reading and file storing here.
 """
 import os
 from src.utils import not_implemented
-from src.pipeline import TRAIN_MODE
 
 
-
-def load_data(tokenizer_func, path, program_mode, file_mode):
+def load_data(tokenizer_func, path, program_mode, file_type):
     docs = []
     if not os.path.exists(path):
         raise FileNotFoundError("%s could not be found." %path)
     if os.path.isfile(path):
-        docs.append(read_file(tokenizer_func, path, program_mode, file_mode))
+        docs.append(read_file(tokenizer_func, path, program_mode, file_type))
     else:
         for _, _, files in os.walk(path):
             for f in files:
-                docs.append(read_file(tokenizer_func, os.path.join(path, f), program_mode, file_mode))
-    return docs
+                fp = os.path.join(path, f)
+                docs.append(read_file(tokenizer_func, fp, program_mode, file_type))
+    return [token for sentence in docs for token in sentence]
 
 
 def get_filereader_function(fname, program_mode, mode=None):
@@ -28,7 +27,7 @@ def get_filereader_function(fname, program_mode, mode=None):
             _, reader_id = fname.rsplit('.', maxsplit=1)
     else:
         reader_id = mode
-    if program_mode == TRAIN_MODE:
+    if program_mode == 'train':
         reader_id += "_train"
     return file_parse_dict[reader_id]
 
@@ -38,7 +37,7 @@ def read_file(tokenizer_func, fpath, program_mode, mode=None):
         if program_mode == "train":
             return read_func(fpath)
         else:
-            return tokenizer_func(read_func(fpath))
+            return tokenizer_func().tokenize(read_func(fpath))
 
 
 def read_txt_file(fpath):
@@ -53,17 +52,14 @@ def read_training_txt_file(fpath):
     return content
 
 
-@not_implemented
 def read_gutenberg(fpath):
     pass
 
 
-@not_implemented
 def read_dwds(fpath):
     pass
 
 
-@not_implemented
 def read_textgrid(fpath):
     pass
 

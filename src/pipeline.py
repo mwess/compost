@@ -26,13 +26,14 @@ class Pipeline:
         self._load_tokenizer(options)
         self._load_taggers(options)
         data_read_mode = options.opts.get('input_mode', None)
-        self._data = load_data(self._tokenizer, options.opts['input_data'], data_read_mode, options.opts['mode'])
+        self._data = load_data(self._tokenizer, options.opts['inputpath'], options.opts['mode'], data_read_mode)
         if options.opts["mode"] == TRAIN_MODE:
             for job in self._jobs:
                 job.train(self._data)
                 job.save(options.opts.get('savepath', DEFAULT_SAVE_PATH))
         if options.opts["mode"] == TAG_MODE:
             for job in self._jobs:
+                job.load(options.opts['profilepath'])
                 job.tag(self._data)
             self.write_output(options.opts['outputpath'])
         if options.opts["mode"] == TRAIN_KFCV:
@@ -44,11 +45,11 @@ class Pipeline:
         self._tokenizer = load_tokenizer(tokenizer_name)
 
     def _load_taggers(self, options):
-        tagger_list = options.opts["taggers"]
+        tagger_list = options.opts["taggers"].split(',')
         taggers = load_taggers(tagger_list)
         self._jobs = []
-        for key in taggers.keys():
-            self._jobs.append(Job(taggers[key], options))
+        for tagger in taggers:
+            self._jobs.append(Job(tagger, options))
 
     def write_output(self, outpath):
         with open(outpath, 'w') as f:

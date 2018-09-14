@@ -7,6 +7,7 @@ class Tagger(AbstractTagger):
 
     def __init__(self):
         self._tagger = PerceptronTagger(load=False)
+        self._name = 'nltkperceptron'
         self._model_name = "nltkperceptron"
         self._result = None
 
@@ -14,12 +15,16 @@ class Tagger(AbstractTagger):
         with open(fpath, 'wb') as f:
             dill.dump(self._tagger, f)
 
-    def load(self, fpath):
-        with open(fpath, 'rb') as f:
-            self._tagger = dill.load(f)
+    def load(self, fpath=None):
+        if fpath == '':
+            self._tagger = PerceptronTagger(load=True)
+        else:
+            with open(fpath, 'rb') as f:
+                self._tagger = dill.load(f)
 
     def tag(self, data):
-        self._result = self._tagger.tag(data)
+        res = self._tagger.tag(data)
+        return [x[1] for x in res]
 
     def train(self, data):
         # Reset tagger.
@@ -43,3 +48,11 @@ class Tagger(AbstractTagger):
     @property
     def model_name(self):
         return self._model_name
+
+    @property
+    def result(self):
+        return self._result
+
+    @property
+    def name(self):
+        return self._name

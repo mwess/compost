@@ -1,0 +1,8 @@
+# Template for optionsfile
+
+tokenizer=NLTKTokenizer
+taggers=NLTKPerceptron,NLTKPerceptron
+mode=tag
+inputpath=tests/additional_data/io_test_case_1_inputdata
+outputpath=tests/additional_data/compost_test/result
+profilepath=

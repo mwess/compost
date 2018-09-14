@@ -87,7 +87,7 @@ class Tagger(AbstractTagger):
                                                 input_file,
                                                 output_file),
                        shell=True, stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
-        #now merge result
+        #now merge correct_result
         with open(output_file) as f:
             result  = f.readlines()
         self._result = list(zip(data, result))

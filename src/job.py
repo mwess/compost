@@ -1,19 +1,20 @@
 import os
 from uuid import uuid1
-from taggers.abstracttagger import load_tagger
 
 default_temporary_dir = "/tmp/compost"
 
-class Job():
+
+class Job:
 
     def __init__(self, tagger, options):
-        self._name = tagger.__name__
+        self._name = tagger.name
         self._tagger = tagger
         self._tagresult = None
+        self._temp_dir = None
         if self._tagger.produces_temp_data:
             self._init_temp_dir()
             self._tagger.add_temp_dir(self._temp_dir)
-        if self._tagger.requires_additional_data:
+        if self._tagger.requires_additional_params:
             self._tagger.set_additional_params(options)
 
     def _init_temp_dir(self):
@@ -25,7 +26,8 @@ class Job():
         os.makedirs(self._temp_dir)
 
     def __del__(self):
-        os.removedirs(self._temp_dir)
+        if self._tagger.produces_temp_data:
+            os.removedirs(self._temp_dir)
 
     def __str__(self):
         return self._name
@@ -34,7 +36,7 @@ class Job():
         self._tagger.train(data)
 
     def tag(self, data):
-        self._tagresult =  self._tagger.tag(data)
+        self._tagresult = self._tagger.tag(data)
 
     def save(self, path):
         self._tagger.save(path)

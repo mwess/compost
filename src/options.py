@@ -43,7 +43,6 @@ class OptionsFile(AbstractOptions):
     def process_options(self):
         pass
 
-
     @property
     def opts(self):
         return self._opts

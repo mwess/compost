@@ -1,6 +1,7 @@
 import inspect
 import warnings
 
+
 class NotImplementedException(Exception):
     pass
 
@@ -14,16 +15,17 @@ def not_implemented(obj):
             typename = "Class "
         else:
             typename = ""
-        raise NotImplementedException("%s%s is not implemented." %(typename, obj.__name__))
+        raise NotImplementedException("%s%s is not implemented." % (typename, obj.__name__))
 
     return wrapper()
 
 
 def deprecated(obj):
 
-    def wrapper(obj):
+    def wrapper():
         warnings.filterwarnings(action="once")
-        warnings.warn("%s is deprecated." %obj.__name__, DeprecationWarning)
+        warnings.warn("%s is deprecated." % obj.__name__, DeprecationWarning)
         return obj()
 
     return wrapper()
+

@@ -8,16 +8,20 @@ default_taggerclass = "Tagger"
 
 
 def load_taggers(tagger_list):
-    taggers = {}
-    for filename in os.listdir(tagger_directory):
-        module_name = filename.split('.')[0]
-        if module_name not in tagger_list:
+    taggers = []
+    for module_name in tagger_list:
+        available_modules = [x.split('.')[0] for x in os.listdir(tagger_directory)]
+        if module_name not in available_modules:
             continue
-        module = importlib.import_module(os.path.join(tagger_directory, filename))
+    #for filename in os.listdir(tagger_directory):
+        #module_name = filename.split('.')[0]
+        #if module_name not in tagger_list:
+        #    continue
+        module = importlib.import_module('.'.join([tagger_directory, module_name]))
         tagger = getattr(module, default_taggerclass)
         if not inspect.isclass(tagger):
             raise Exception("Tagger %s is not a class!")
-        taggers[module_name] = tagger()
+        taggers.append(tagger())
     return taggers
 
 
@@ -79,4 +83,9 @@ class AbstractTagger(ABC):
     @property
     @abstractmethod
     def model_name(self):
+        pass
+
+    @property
+    @abstractmethod
+    def result(self):
         pass
