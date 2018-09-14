@@ -1,5 +1,8 @@
+import os
+
 import dill
 from nltk.tag.perceptron import PerceptronTagger
+
 from taggers.abstracttagger import AbstractTagger
 
 
@@ -10,12 +13,20 @@ class Tagger(AbstractTagger):
         self._name = 'nltkperceptron'
         self._model_name = "nltkperceptron"
         self._result = None
+        super().__init__()
 
-    def save(self, fpath):
+    def _save_model(self, fpath):
         with open(fpath, 'wb') as f:
             dill.dump(self._tagger, f)
 
-    def load(self, fpath=None):
+    def load(self, path):
+        if path == '':
+            self._load_model(path)
+        else:
+            mpath = os.path.join(path, self.model_name)
+            self._load_model(mpath)
+
+    def _load_model(self, fpath):
         if fpath == '':
             self._tagger = PerceptronTagger(load=True)
         else:
