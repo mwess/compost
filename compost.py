@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 from src.options import OptionsFile
 from src.pipeline import Pipeline
