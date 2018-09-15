@@ -2,6 +2,10 @@ from abc import ABC, abstractmethod
 import os
 
 class AbstractOptions(ABC):
+    """
+    Base for all options classes.
+    All options types must inherit from it.
+    """
 
     @abstractmethod
     def __init__(self):
@@ -9,11 +13,19 @@ class AbstractOptions(ABC):
 
     @abstractmethod
     def parse_options(self):
+        """
+        Parse options from given source.
+        :return:
+        """
         pass
 
     @property
     @abstractmethod
     def opts(self):
+        """
+        Dictionary with the options.
+        :return:
+        """
         pass
 
 

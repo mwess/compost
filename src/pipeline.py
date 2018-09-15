@@ -14,6 +14,9 @@ TRAIN_KFCV = 'kfcv'
 
 
 class Pipeline:
+    """
+    Class that handles the execution of the program given an instance of Options. All modes are implemented here.
+    """
 
     DEFAULT_PARSER = "NLTKTokenizer"
 
@@ -23,6 +26,11 @@ class Pipeline:
         self._data = None
 
     def execute_options(self, options):
+        """
+        Uses options to exeute program.
+        :param options:
+        :return:
+        """
         self._load_tokenizer(options)
         self._load_taggers(options)
         data_read_mode = options.opts.get('input_mode', None)
@@ -53,7 +61,6 @@ class Pipeline:
 
     def write_output(self, outpath):
         with open(outpath, 'w') as f:
-            # First write header.
             header_str = "Word"
             for job in self._jobs:
                 header_str += '\t' + job.name

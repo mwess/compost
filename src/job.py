@@ -5,6 +5,10 @@ default_temporary_dir = "/tmp/compost"
 
 
 class Job:
+    """
+    Serves as a wrapper for different tagger classes and handles temporary directories and additional overhead that
+    some taggers require.
+    """
 
     def __init__(self, tagger, options):
         self._name = tagger.name
@@ -18,6 +22,10 @@ class Job:
             self._tagger.set_additional_params(options)
 
     def _init_temp_dir(self):
+        """
+        Initializes a temporary directory where additional data can be stored.
+        :return:
+        """
         temp_name = str(uuid1())
         self._temp_dir = os.path.join(default_temporary_dir, temp_name)
         if os.path.exists(self._temp_dir):

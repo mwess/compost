@@ -49,7 +49,7 @@ def get_filereader_function(fname, program_mode, mode=None):
     return file_parse_dict[reader_id]
 
 
-def read_file(tokenizer_func, fpath, program_mode, mode=None):
+def read_file(tokenizer, fpath, program_mode, mode=None):
     """
     Use reader_function to read file. Text is not tokenized when the program_mode is not a training mode.
     :param tokenizer_func: Function to tokenize read strings.
@@ -64,7 +64,7 @@ def read_file(tokenizer_func, fpath, program_mode, mode=None):
     if program_mode == "train":
         return read_func(fpath)
     else:
-        return tokenizer_func().tokenize(read_func(fpath))
+        return tokenizer().tokenize(read_func(fpath))
 
 
 def read_txt_file(fpath):
@@ -86,8 +86,10 @@ def read_training_txt_file(fpath):
     :return:
     """
     with open(fpath) as f:
-        content = [x.split('\t') for x in f.readlines()]
-    return content
+        content = f.read().split('\n\n')
+        sentences = [x.split('\n') for x in content]
+        sentences = [[x.split('\t') for x in y] for y in sentences]
+    return sentences
 
 
 def read_gutenberg(fpath):

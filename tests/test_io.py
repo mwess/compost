@@ -1,6 +1,7 @@
 import unittest
 from src.io import load_data
 try:
+    from tokenizers.NLTKTokenizer import Tokenizer
     from nltk import word_tokenize
     NLTK_IMPORTED = True
 except ModuleNotFoundError:
@@ -20,5 +21,5 @@ class IOTests(unittest.TestCase):
                              'it', 'more', 'dry', 'or', 'more', 'wet', '?']
         program_mode = 'tag'
         file_type = 'txt'
-        data = load_data(word_tokenize, input_directory, program_mode, file_type)
+        data = load_data(Tokenizer, input_directory, program_mode, file_type)
         self.assertListEqual(data, correct_solution)

@@ -1,0 +1,5 @@
+mode=tag
+taggers=NLTKPerceptron
+inputpath=tests/additional_data/train_test_2
+outputpath=tests/additional_data/train_test_result
+profilepath=tests/additional_data/train_directory

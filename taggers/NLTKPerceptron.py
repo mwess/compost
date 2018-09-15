@@ -19,7 +19,7 @@ class Tagger(AbstractTagger):
         with open(fpath, 'wb') as f:
             dill.dump(self._tagger, f)
 
-    def load(self, path):
+    def load(self, path=''):
         if path == '':
             self._load_model(path)
         else:

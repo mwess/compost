@@ -1,0 +1,4 @@
+mode=train
+inputpath=tests/additional_data/train_test_1
+taggers=NLTKPerceptron
+savepath=tests/additional_data/train_directory

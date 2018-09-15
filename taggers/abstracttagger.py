@@ -28,7 +28,6 @@ def load_taggers(tagger_list):
     return taggers
 
 
-@deprecated
 def load_tagger(tagger_name):
     module_name = tagger_name + ".py"
     if module_name not in os.listdir(tagger_directory):
