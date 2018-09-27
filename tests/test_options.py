@@ -2,7 +2,7 @@
 Formulate tests for the options module here.
 """
 import unittest
-from src.options import OptionsFile
+from compost.options import OptionsFile
 
 
 class OptionsFileTest(unittest.TestCase):

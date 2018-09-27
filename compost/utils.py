@@ -6,6 +6,13 @@ class NotImplementedException(Exception):
     pass
 
 
+class NotEnoughArgumentsException(Exception):
+    pass
+
+
+class NotIterableError(Exception):
+    pass
+
 def not_implemented(obj):
 
     def wrapper():

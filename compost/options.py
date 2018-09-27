@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import os
 
+
 class AbstractOptions(ABC):
     """
     Base for all options classes.

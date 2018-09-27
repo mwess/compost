@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import sys
-from src.options import OptionsFile
-from src.pipeline import Pipeline
+from compost.options import OptionsFile
+from compost.pipeline import Pipeline
 
 
 if __name__ == "__main__":

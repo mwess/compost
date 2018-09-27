@@ -2,8 +2,8 @@ import os
 import unittest
 
 
-from src.options import OptionsFile
-from src.pipeline import Pipeline
+from compost.options import OptionsFile
+from compost.pipeline import Pipeline
 try:
     import nltk
     NLTK_IMPORTED = True

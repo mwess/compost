@@ -3,8 +3,8 @@ Put everything together here.
 """
 from tokenizers.abstracttokenizer import load_tokenizer
 from taggers.abstracttagger import load_taggers
-from src.io import load_data
-from src.job import Job
+from compost.io import load_data
+from compost.job import Job
 
 DEFAULT_SAVE_PATH = '.'
 

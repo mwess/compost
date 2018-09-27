@@ -1,5 +1,5 @@
 import unittest
-from src.io import load_data
+from compost.io import load_data
 try:
     from tokenizers.NLTKTokenizer import Tokenizer
     from nltk import word_tokenize

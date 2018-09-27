@@ -1,8 +1,8 @@
 import os
 import unittest
 from taggers.abstracttagger import load_taggers
-from src.options import OptionsFile
-from src.pipeline import Pipeline
+from compost.options import OptionsFile
+from compost.pipeline import Pipeline
 try:
     from taggers.NLTKPerceptron import Tagger as perctagger
     from nltk import word_tokenize

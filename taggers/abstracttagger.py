@@ -3,7 +3,7 @@ import importlib
 import inspect
 import os
 
-from src.utils import deprecated
+from compost.utils import deprecated
 
 tagger_directory = "taggers"
 default_taggerclass = "Tagger"

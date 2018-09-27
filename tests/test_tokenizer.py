@@ -2,7 +2,7 @@
 Perform tests for tokenizers here.
 """
 import unittest
-from src.options import OptionsFile
+from compost.options import OptionsFile
 from tokenizers.abstracttokenizer import load_tokenizer, TokenizerNotFoundException, TokenizerClassMissingException
 try:
     import nltk
