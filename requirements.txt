@@ -1,0 +1,6 @@
+nltk
+sklearn
+numpy
+dill
+pycodestyle
+pytest

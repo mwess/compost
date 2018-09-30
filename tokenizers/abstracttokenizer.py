@@ -7,6 +7,11 @@ default_classname = "Tokenizer"
 tokenizer_directory = "tokenizers"
 
 def load_tokenizer(tokenizer_name):
+    """
+    Loads tokenizer from tokenizer_directory.
+    :param tokenizer_name:
+    :return:
+    """
     module_name = tokenizer_name + ".py"
     if module_name not in os.listdir(tokenizer_directory):
         raise TokenizerNotFoundException("Tokenizer cannot be found.")
@@ -26,6 +31,9 @@ class TokenizerClassMissingException(Exception):
 
 
 class AbstractTokenizer(ABC):
+    """
+    Class from which all tokenizers must inherit.
+    """
 
     @abstractmethod
     def __init__(self):
@@ -33,4 +41,9 @@ class AbstractTokenizer(ABC):
 
     @abstractmethod
     def tokenize(self, text):
+        """
+        Implementation of tokenizer function.
+        :param text: Text to tokenize.
+        :return:
+        """
         pass

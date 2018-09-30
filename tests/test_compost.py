@@ -1,9 +1,9 @@
 import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 import unittest
-
-
-from src.options import OptionsFile
-from src.pipeline import Pipeline
+from compost.options import OptionsFile
+from compost.pipeline import Pipeline
 try:
     import nltk
     NLTK_IMPORTED = True

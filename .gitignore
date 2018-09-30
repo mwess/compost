@@ -1,3 +1,4 @@
 idea/
 .idea/
 *.swp
+tests/additional_data/train_directory/*

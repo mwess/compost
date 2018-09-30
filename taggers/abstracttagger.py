@@ -3,7 +3,7 @@ import importlib
 import inspect
 import os
 
-from src.utils import deprecated
+from compost.utils import deprecated
 
 tagger_directory = "taggers"
 default_taggerclass = "Tagger"
@@ -28,7 +28,6 @@ def load_taggers(tagger_list):
     return taggers
 
 
-@deprecated
 def load_tagger(tagger_name):
     module_name = tagger_name + ".py"
     if module_name not in os.listdir(tagger_directory):
@@ -53,24 +52,42 @@ class AbstractTagger(ABC):
     def __init__(self, **kwargs):
         pass
 
-    @abstractmethod
     def save(self, fpath):
+        mpath = os.path.join(fpath, self.model_name)
+        self._save_model(mpath)
         """
-        Save trained model in the given directory. Name of the saved model has to be supplied by the inheriting tagger
-        class.
+        Save trained model in the given directory.
         :param fpath: directory to save path.
         :return:
         """
         pass
 
     @abstractmethod
-    def load(self, fpath):
+    def _save_model(self, mpath):
         """
-        Load model from path. Model name has to be supplied by the inheriting tagger class.
+        Save trained model to given file path.
+        :param mpath:
+        :return:
+        """
+        pass
+
+    def load(self, fpath):
+        mpath = os.path.join(fpath, self.model_name)
+        self._load_model(mpath)
+        """
+        Load model from path.
         :param fpath: directory of model to be loaded.
         :return: Model
         """
         pass
+
+    @abstractmethod
+    def _load_model(self, mpath):
+        """
+        Load model from file path.
+        :param mpath:
+        :return:
+        """
 
     @abstractmethod
     def tag(self, data):

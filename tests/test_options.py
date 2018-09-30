@@ -1,8 +1,11 @@
 """
 Formulate tests for the options module here.
 """
+import os
 import unittest
-from src.options import OptionsFile
+import sys
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+from compost.options import OptionsFile
 
 
 class OptionsFileTest(unittest.TestCase):
