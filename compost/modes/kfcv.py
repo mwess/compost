@@ -1,7 +1,15 @@
+import logging
 import math
 import random
 
 from compost.utils import NotEnoughArgumentsException, NotIterableError
+from compost import defaultoptions
+
+# Passable Option paramters
+KFCV_NSPLITS='kfcv:n_splits'
+KFCV_GROUP_SIZE='kfcv:group_size'
+KFCV_VERBOSE='kfcv:verbose'
+KFCV_STORE_INTERMEDIATE_RESULTS='kfcv:store_intermediate_results'
 
 
 class KfoldCV:
@@ -62,8 +70,10 @@ def compute_performance(tag_res, data):
 
 def kfoldcv_training(taggers, data, options):
     # TODO: Implement saving option for best trained models.
-    nsplits = options.opts.get('kfcv_nsplits', None)
-    group_size = options.opts.get('kfcv_group_size', None)
+    if options.opts.get(KFCV_VERBOSE, False):
+        logger = logging.getLogger(__name__)
+    nsplits = options.opts.get(KFCV_NSPLITS, None)
+    group_size = options.opts.get(KFCV_GROUP_SIZE, None)
     performances = []
     kfcv = KfoldCV(nsplits, group_size)
     kfcv.split(data)
@@ -73,8 +83,12 @@ def kfoldcv_training(taggers, data, options):
         tmp_performances = {}
         for tagger in taggers:
             tagger.train(train_data)
+            if options.opts.get(KFCV_STORE_INTERMEDIATE_RESULTS, defaultoptions.KFCV_STORE_INTERMEDIATE_RESULTS):
+                pass
             test_result = tagger.tag(test_data)
             perf = compute_performance(test_result, test_data)
             tmp_performances[tagger.name] = perf
+            if options.opts.get(KFCV_VERBOSE, False):
+                logger.info('Tagger: {}\nPerformance: {}'.format(tagger.name, perf))
         performances.append(tmp_performances)
     return performances

@@ -1,14 +1,17 @@
 """
 Perform tests for tokenizers here.
 """
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 import unittest
-from compost.options import OptionsFile
-from tokenizers.abstracttokenizer import load_tokenizer, TokenizerNotFoundException, TokenizerClassMissingException
 try:
     import nltk
     NLTK_IMPORTED=True
 except ModuleNotFoundError:
     NLTK_IMPORTED=False
+from compost.options import OptionsFile
+from tokenizers.abstracttokenizer import load_tokenizer, TokenizerNotFoundException, TokenizerClassMissingException
 
 class TokenizerTests(unittest.TestCase):
 

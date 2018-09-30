@@ -1,8 +1,7 @@
 import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 import unittest
-from taggers.abstracttagger import load_taggers
-from compost.options import OptionsFile
-from compost.pipeline import Pipeline
 try:
     from taggers.NLTKPerceptron import Tagger as perctagger
     from nltk import word_tokenize
@@ -10,6 +9,8 @@ try:
     NLTK_IMPORTED = True
 except ModuleNotFoundError:
     NLTK_IMPORTED = False
+from compost.options import OptionsFile
+from compost.pipeline import Pipeline
 
 
 

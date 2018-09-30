@@ -1,8 +1,11 @@
 """
 Put everything together here.
 """
+import logging
+
 from tokenizers.abstracttokenizer import load_tokenizer
 from taggers.abstracttagger import load_taggers
+from compost.defaultoptions import DEFAULT_LOG_FILE, DEFAULT_LOG_FILE_MODE
 from compost.io import load_data
 from compost.job import Job
 
@@ -31,6 +34,7 @@ class Pipeline:
         :param options:
         :return:
         """
+        self._set_logging(options)
         self._load_tokenizer(options)
         self._load_taggers(options)
         data_read_mode = options.opts.get('input_mode', None)
@@ -47,6 +51,12 @@ class Pipeline:
         if options.opts["mode"] == TRAIN_KFCV:
             # Training with kfold cross validation.
             pass
+
+    def _set_logging(self, options):
+        log_file = options.opts.get('log_file', DEFAULT_LOG_FILE)
+        log_file_mode = options.opts.get('log_file_mode', DEFAULT_LOG_FILE_MODE)
+        logging.basicConfig(filename=log_file, filemode=log_file_mode)
+
 
     def _load_tokenizer(self, options):
         tokenizer_name = options.opts.get("tokenizer", Pipeline.DEFAULT_PARSER)
